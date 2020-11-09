@@ -1,0 +1,24 @@
+.root {
+}
+
+.h1 {
+    -fx-font-size: 18;
+    -fx-font-weight: 700;
+}
+
+.btn-dark {
+    -fx-background-color: #343a40;
+    -fx-text-fill: #ffffff;
+}
+
+.btn-dark:hover {
+    -fx-background-color: #23272b;
+    -fx-text-fill: #ffffff;
+}
+
+.bg-login {
+    -fx-background-image: url("../images/login-background.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 850 600;
+    -fx-background-position: center center;
+}
