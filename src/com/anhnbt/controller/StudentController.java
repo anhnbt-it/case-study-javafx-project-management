@@ -1,10 +1,10 @@
 package com.anhnbt.controller;
 
 import com.anhnbt.Main;
-import com.anhnbt.services.FileManager;
+import com.anhnbt.services.FileIOManagement;
 import com.anhnbt.services.Validator;
 import com.anhnbt.entities.Student;
-import com.anhnbt.services.StudentDao;
+import com.anhnbt.services.StudentIManagement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,9 +19,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class StudentController implements Initializable {
-    private FileManager fileManager;
+    private FileIOManagement fileIOManagement;
     private Main application;
-    private StudentDao studentDAO;
+    private StudentIManagement studentManagement;
     private Validator validator;
     private boolean isEdit = false;
     private int studentId = -1;
@@ -72,7 +72,7 @@ public class StudentController implements Initializable {
         } else {
             Student student = new Student(name.getText(), address.getText(), phone.getText(), email.getText());
             if (!isEdit) {
-                if (studentDAO.save(student)) {
+                if (studentManagement.save(student)) {
                     application.showMsg("Thêm học viên thành công!", Alert.AlertType.INFORMATION);
                     tableView.getItems().add(student);
                     clearField();
@@ -80,7 +80,7 @@ public class StudentController implements Initializable {
                     application.showMsg("Đã xảy ra lỗi. Vui lòng thử lại!", Alert.AlertType.ERROR);
                 }
             } else {
-                studentDAO.update(studentId, student);
+                studentManagement.update(studentId, student);
                 application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
                 loadAllStudent();
                 clearField();
@@ -96,7 +96,7 @@ public class StudentController implements Initializable {
             alert.setContentText("Bạn thực sự muốn xóa?");
             Optional<ButtonType> confirm = alert.showAndWait();
             if (confirm.get() == ButtonType.OK){
-                studentDAO.delete(studentId);
+                studentManagement.delete(studentId);
                 application.showMsg("Xóa thành công!", Alert.AlertType.INFORMATION);
                 loadAllStudent();
                 clearField();
@@ -110,10 +110,10 @@ public class StudentController implements Initializable {
     public void onMouseClick(MouseEvent mouseEvent) {
         studentId = tableView.getSelectionModel().getSelectedIndex();
         if (studentId != -1) {
-            name.setText(studentDAO.get(studentId).getName());
-            address.setText(studentDAO.get(studentId).getAddress());
-            phone.setText(studentDAO.get(studentId).getPhone());
-            email.setText(studentDAO.get(studentId).getEmail());
+            name.setText(studentManagement.get(studentId).getName());
+            address.setText(studentManagement.get(studentId).getAddress());
+            phone.setText(studentManagement.get(studentId).getPhone());
+            email.setText(studentManagement.get(studentId).getEmail());
             isEdit = true;
             btnDelete.setDisable(false);
         }
@@ -121,7 +121,7 @@ public class StudentController implements Initializable {
 
     private void loadAllStudent() {
         tableView.getItems().clear();
-        for (Student student: studentDAO.getAll()) {
+        for (Student student: studentManagement.getAll()) {
             tableView.getItems().add(student);
         }
     }
@@ -129,19 +129,19 @@ public class StudentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         validator = new Validator();
-        studentDAO = new StudentDao();
-        fileManager = new FileManager();
+        studentManagement = new StudentIManagement();
+        fileIOManagement = new FileIOManagement();
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tableView.getItems().addAll(studentDAO.getAll());
+        tableView.getItems().addAll(studentManagement.getAll());
     }
 
     public void btnExport(ActionEvent actionEvent) {
         try {
-            fileManager.writeCSV(studentDAO.getAll());
+            fileIOManagement.writeCSV(studentManagement.getAll());
             application.showMsg("Xuất file CSV thành công!", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,9 +149,9 @@ public class StudentController implements Initializable {
     }
 
     public void btnImport(ActionEvent actionEvent) {
-        List<Student> list = fileManager.readCSV();
+        List<Student> list = fileIOManagement.readCSV();
         if (list != null) {
-            studentDAO.setStudents(list);
+            studentManagement.setStudents(list);
             loadAllStudent();
             application.showMsg("Nhập file CSV thành công!", Alert.AlertType.INFORMATION);
         } else {
@@ -162,7 +162,7 @@ public class StudentController implements Initializable {
     public void btnSearch(ActionEvent actionEvent) {
         String q = searchField.getText().toLowerCase().trim();
         List<Student> students = new ArrayList<>();
-        for (Student student: studentDAO.getAll()) {
+        for (Student student: studentManagement.getAll()) {
             if (student.getName().toLowerCase().trim().contains(q)) {
                 students.add(student);
             }

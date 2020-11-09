@@ -14,11 +14,11 @@ import java.util.Scanner;
  * Time: 8:42 SA
  */
 
-public class FileManager {
+public class FileIOManagement {
     private final String pathName = "Data.csv";
     private File file;
 
-    public FileManager() {
+    public FileIOManagement() {
         file = new File(pathName);
         try {
             if (!file.exists()) {

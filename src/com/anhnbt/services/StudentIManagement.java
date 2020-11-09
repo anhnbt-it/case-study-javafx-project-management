@@ -5,10 +5,10 @@ import com.anhnbt.entities.Student;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDao implements Dao<Student> {
+public class StudentIManagement implements IManagement<Student> {
     private List<Student> students;
 
-    public StudentDao() {
+    public StudentIManagement() {
         students = new ArrayList<>();
 //        students.add(new Student("Nguyễn Bá Tuấn Anh", "Hà Nội", "0346868928", "anhnbt.it@gmail.com"));
 //        students.add(new Student("Trần Công Duy", "Chưa nhập", "Chưa nhập", "Chưa nhập"));

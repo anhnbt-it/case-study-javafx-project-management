@@ -1,10 +1,8 @@
 package com.anhnbt.services;
 
-import javafx.collections.ObservableList;
-
 import java.util.List;
 
-public interface Dao<T> {
+public interface IManagement<T> {
     List<T> getAll();
     T get(int id);
     boolean save(T obj);
