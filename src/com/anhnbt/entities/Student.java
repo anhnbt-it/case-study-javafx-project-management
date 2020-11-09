@@ -8,11 +8,11 @@ public class Student extends Person implements Serializable {
 
     public Student() {
         // Goi constructor de khoi tao gia tri mac dinh;
-        this(Student.nextId, "Chưa có tên", "Chưa có địa chỉ", "Chưa có số điện thoại", "Chưa có email");
+        this(Student.nextId, "Chưa có tên", "Chưa có địa chỉ", "Chưa có số điện thoại", "Chưa có email", "Khác");
     }
 
-    public Student(int id, String name, String address, String phone, String email) {
-        super(name, address, phone, email);
+    public Student(int id, String name, String address, String phone, String email, String gender) {
+        super(name, address, phone, email, gender);
         this.id = id;
         nextId++;
     }

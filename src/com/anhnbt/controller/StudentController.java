@@ -37,6 +37,8 @@ public class StudentController implements Initializable {
     @FXML
     private TableColumn<Student, String> emailCol;
     @FXML
+    private TableColumn<Student, String> genderCol;
+    @FXML
     private TableView<Student> tableView;
     @FXML
     private TextField name;
@@ -46,10 +48,19 @@ public class StudentController implements Initializable {
     private TextField phone;
     @FXML
     private TextField email;
+
+    @FXML
+    private ToggleGroup gender;
+    @FXML
+    private RadioButton male;
+    @FXML
+    private RadioButton female;
+
     @FXML
     private Button btnDelete;
     @FXML
     private TextField searchField;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,6 +73,7 @@ public class StudentController implements Initializable {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+        genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
         tableView.getItems().addAll(studentManagement.getAll());
     }
 
@@ -77,8 +89,9 @@ public class StudentController implements Initializable {
         } else if (!formValidator.email(email.getText())) {
             application.showMsg("Email sai định dạng!", Alert.AlertType.ERROR);
         } else {
+            String genderStr = female.isSelected() ? female.getText() : male.getText();
             if (!isEdit) {
-                Student student = new Student(Student.nextId, name.getText(), address.getText(), phone.getText(), email.getText());
+                Student student = new Student(Student.nextId, name.getText(), address.getText(), phone.getText(), email.getText(), genderStr);
                 if (studentManagement.save(student)) {
                     application.showMsg("Thêm học viên thành công!", Alert.AlertType.INFORMATION);
                     tableView.getItems().add(student);
@@ -91,6 +104,7 @@ public class StudentController implements Initializable {
                 studentManagement.get(studentId).setAddress(address.getText());
                 studentManagement.get(studentId).setPhone(phone.getText());
                 studentManagement.get(studentId).setEmail(email.getText());
+                studentManagement.get(studentId).setGender(genderStr);
                 application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
                 reloadTableView(studentManagement.getAll());
                 clearField();
@@ -177,5 +191,9 @@ public class StudentController implements Initializable {
         address.clear();
         phone.clear();
         email.clear();
+    }
+
+    public void btnReload(ActionEvent actionEvent) {
+        reloadTableView(studentManagement.getAll());
     }
 }

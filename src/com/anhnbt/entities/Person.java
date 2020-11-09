@@ -7,15 +7,17 @@ public class Person {
     private String address;
     private String phone;
     private String email;
+    private String gender;
 
     public Person() {
     }
 
-    public Person(String name, String address, String phone, String email) {
+    public Person(String name, String address, String phone, String email, String gender) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
+        this.gender = gender;
     }
 
     public String getName() {
@@ -50,6 +52,14 @@ public class Person {
         this.email = email;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -57,6 +67,7 @@ public class Person {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
                 '}';
     }
 }
