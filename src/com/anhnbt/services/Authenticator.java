@@ -7,6 +7,7 @@ public class Authenticator {
     private static final Map<String, String> USERS = new HashMap<>();
     static {
         USERS.put("admin", "123");
+        USERS.put("anhnbt", "123");
     }
     public static boolean validate(String userId, String password) {
         String validUserPassword = USERS.get(userId);
