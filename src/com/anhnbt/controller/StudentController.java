@@ -141,21 +141,21 @@ public class StudentController implements Initializable {
 
     public void btnExport(ActionEvent actionEvent) {
         try {
-            fileManager.writeExcel(studentDAO.getAll());
-            application.showMsg("Ghi file thành công!", Alert.AlertType.INFORMATION);
+            fileManager.writeCSV(studentDAO.getAll());
+            application.showMsg("Xuất file CSV thành công!", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void btnImport(ActionEvent actionEvent) {
-        List<Student> list = fileManager.readFromFile();
+        List<Student> list = fileManager.readCSV();
         if (list != null) {
             studentDAO.setStudents(list);
             loadAllStudent();
-            application.showMsg("Đọc file thành công!", Alert.AlertType.INFORMATION);
+            application.showMsg("Nhập file CSV thành công!", Alert.AlertType.INFORMATION);
         } else {
-            application.showMsg("Đọc file thất bại!", Alert.AlertType.ERROR);
+            application.showMsg("Nhập file CSV thất bại!", Alert.AlertType.ERROR);
         }
     }
 

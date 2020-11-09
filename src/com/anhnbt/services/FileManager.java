@@ -5,6 +5,7 @@ import com.anhnbt.entities.Student;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,66 +15,55 @@ import java.util.List;
  */
 
 public class FileManager {
-    private final String pathName = "data.dat";
+    private final String pathName = "Data.csv";
     private File file;
 
     public FileManager() {
         file = new File(pathName);
-    }
-
-    public ArrayList<Student> readFromFile() {
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            FileInputStream fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            Object students = objectInputStream.readObject();
-            objectInputStream.close();
-            fileInputStream.close();
-            return (ArrayList<Student>) students;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void writeToFile(List<Student> students) {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(students);
-            objectOutputStream.close();
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void writeExcel(List<Student> students) throws Exception {
+    public void writeCSV(List<Student> students) throws Exception {
         Writer writer = null;
         try {
-            File file = new File("Data.csv.");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
             writer = new BufferedWriter(new FileWriter(file));
-            for (Student student: students) {
+            for (Student student : students) {
                 String text = student.getName() + "," + student.getAddress() + "," + student.getPhone() + "," + student.getEmail() + "\n";
                 writer.write(text);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             writer.flush();
             writer.close();
         }
+    }
+
+    public List<Student> readCSV() {
+        Scanner scanner = null;
+        List<Student> students = new ArrayList<>();
+        try {
+            scanner = new Scanner(new BufferedReader(new FileReader(file)));
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.contains(",")) {
+                    String[] data = line.split(",");
+                    students.add(new Student(data[0], data[1], data[2], data[3]));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
+        }
+        return students;
     }
 }
