@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -46,7 +47,7 @@ public class StudentController implements Initializable {
     @FXML
     private Button btnDelete;
     @FXML
-    private TextField query;
+    private TextField searchField;
 
     public void setApplication(Main application) {
         this.application = application;
@@ -64,32 +65,27 @@ public class StudentController implements Initializable {
     }
 
     public void btnAddStudent(ActionEvent actionEvent) {
-        if (application == null) {
-            return;
+        if (!validator.name(name.getText())) {
+            application.showMsg("Tên phải có độ dài từ 2 - 50 ký tự.", Alert.AlertType.ERROR);
+        } else if (!validator.email(email.getText())) {
+            application.showMsg("Email sai định dạng!", Alert.AlertType.ERROR);
         } else {
-            if (!validator.name(name.getText())) {
-                application.showMsg("Tên phải có độ dài từ 2 - 50 ký tự.", Alert.AlertType.ERROR);
-            } else if (!validator.email(email.getText())) {
-                application.showMsg("Email sai định dạng!", Alert.AlertType.ERROR);
-            } else {
-                Student student = new Student(name.getText(), address.getText(), phone.getText(), email.getText());
-                if (!isEdit) {
-                    if (studentDAO.save(student)) {
-                        application.showMsg("Thêm học viên thành công!", Alert.AlertType.INFORMATION);
-                        tableView.getItems().add(student);
-                        clearField();
-                    } else {
-                        application.showMsg("Đã xảy ra lỗi. Vui lòng thử lại!", Alert.AlertType.ERROR);
-                    }
-                } else {
-
-                    studentDAO.update(studentId, student);
-                    application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
-                    loadAllStudent();
+            Student student = new Student(name.getText(), address.getText(), phone.getText(), email.getText());
+            if (!isEdit) {
+                if (studentDAO.save(student)) {
+                    application.showMsg("Thêm học viên thành công!", Alert.AlertType.INFORMATION);
+                    tableView.getItems().add(student);
                     clearField();
-                    isEdit = false;
-                    studentId = -1;
+                } else {
+                    application.showMsg("Đã xảy ra lỗi. Vui lòng thử lại!", Alert.AlertType.ERROR);
                 }
+            } else {
+                studentDAO.update(studentId, student);
+                application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
+                loadAllStudent();
+                clearField();
+                isEdit = false;
+                studentId = -1;
             }
         }
     }
@@ -153,14 +149,28 @@ public class StudentController implements Initializable {
         if (list != null) {
             studentDAO.setStudents(list);
             loadAllStudent();
-            application.showMsg("Ghi file thành công!", Alert.AlertType.INFORMATION);
+            application.showMsg("Đọc file thành công!", Alert.AlertType.INFORMATION);
         } else {
             application.showMsg("Đọc file thất bại!", Alert.AlertType.ERROR);
         }
     }
 
     public void btnSearch(ActionEvent actionEvent) {
-        System.out.println(query.getText());
-
+        String q = searchField.getText().toLowerCase().trim();
+        List<Student> students = new ArrayList<>();
+        for (Student student: studentDAO.getAll()) {
+            if (student.getName().toLowerCase().trim().contains(q)) {
+                students.add(student);
+            }
+        }
+        if (students.size() > 0) {
+            application.showMsg("Tìm thấy " + students.size() + " kết quả cho " + searchField.getText(), Alert.AlertType.INFORMATION);
+            tableView.getItems().clear();
+            for (Student student: students) {
+                tableView.getItems().add(student);
+            }
+        } else {
+            application.showMsg("Không tìm thấy kết quả nào!", Alert.AlertType.INFORMATION);
+        }
     }
 }
