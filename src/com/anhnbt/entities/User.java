@@ -22,6 +22,7 @@ public class User extends Person {
             synchronized(User.class) { // Dung synchronized de toi uu Multithreading
                 if(null == instance) {
                     instance = new User(userId);
+                    instance.setName("Nguyễn Bá Tuấn Anh");
                     USERS.put(userId, instance);
                 }
             }
