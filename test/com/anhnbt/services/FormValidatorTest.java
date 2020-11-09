@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Date: 09/11/2020
  * Time: 1:53 CH
  */
-class ValidatorTest {
-    private Validator validator = new Validator();
+class FormValidatorTest {
+    private FormValidator formValidator = new FormValidator();
 
     @Test
     @DisplayName("anhnbt@outlook.com.vn")
     void testCaseEmailOne() {
         String regex = "anhnbt@outlook.com.vn";
-        boolean actual = validator.email(regex);
+        boolean actual = formValidator.email(regex);
         assertTrue(actual);
     }
 
@@ -27,7 +27,7 @@ class ValidatorTest {
     @DisplayName("son.mai@codegym.vn")
     void testCaseEmailTwo() {
         String regex = "anhnbt.it@gmail.com";
-        boolean actual = validator.email(regex);
+        boolean actual = formValidator.email(regex);
         assertTrue(actual);
     }
 
@@ -35,7 +35,7 @@ class ValidatorTest {
     @DisplayName("anh.vu@codegym.vn")
     void testCaseEmailThree() {
         String regex = "anh.vu@codegym.vn";
-        boolean actual = validator.email(regex);
+        boolean actual = formValidator.email(regex);
         assertTrue(actual);
     }
 
@@ -43,7 +43,31 @@ class ValidatorTest {
     @DisplayName("Lorem Ipsum")
     void testCaseNameTwo() {
         String regex = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
-        boolean actual = validator.name(regex);
+        boolean actual = formValidator.name(regex);
+        assertFalse(actual);
+    }
+
+    @Test
+    @DisplayName("0346868928")
+    void testPhoneOne() {
+        String regex = "0346868928";
+        boolean actual = formValidator.phone(regex);
+        assertTrue(actual);
+    }
+
+    @Test
+    @DisplayName("03468689289")
+    void testPhoneTwo() {
+        String regex = "03468689289";
+        boolean actual = formValidator.phone(regex);
+        assertFalse(actual);
+    }
+
+    @Test
+    @DisplayName("abc")
+    void testPhoneThree() {
+        String regex = "abc";
+        boolean actual = formValidator.phone(regex);
         assertFalse(actual);
     }
 }

@@ -59,7 +59,7 @@
                               </GridPane>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
-                                    <Button defaultButton="true" mnemonicParsing="false" onAction="#btnAddStudent" text="Lưu" />
+                                    <Button defaultButton="true" mnemonicParsing="false" onAction="#btnSave" text="Lưu" />
                                   <Button mnemonicParsing="false" onAction="#btnReset" text="Nhập lại" />
                                     <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onAction="#btnDelete" text="Xóa" />
                                 </buttons>

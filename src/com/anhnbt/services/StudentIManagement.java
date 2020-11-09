@@ -63,4 +63,14 @@ public class StudentIManagement implements IManagement<Student> {
     public boolean delete(Student obj) {
         return students.remove(obj);
     }
+
+    public List<Student> searchByName(String searchQuery) {
+        List<Student> data = new ArrayList<>();
+        for (Student student: students) {
+            if (student.getName().toLowerCase().trim().contains(searchQuery)) {
+                data.add(student);
+            }
+        }
+        return data;
+    }
 }

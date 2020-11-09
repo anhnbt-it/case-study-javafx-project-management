@@ -2,7 +2,7 @@ package com.anhnbt.controller;
 
 import com.anhnbt.Main;
 import com.anhnbt.services.FileIOManagement;
-import com.anhnbt.services.Validator;
+import com.anhnbt.services.FormValidator;
 import com.anhnbt.entities.Student;
 import com.anhnbt.services.StudentIManagement;
 import javafx.event.ActionEvent;
@@ -19,10 +19,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class StudentController implements Initializable {
-    private FileIOManagement fileIOManagement;
     private Main application;
+    private FileIOManagement fileIOManagement;
     private StudentIManagement studentManagement;
-    private Validator validator;
+    private FormValidator formValidator;
     private boolean isEdit = false;
     private int studentId = -1;
 
@@ -51,25 +51,30 @@ public class StudentController implements Initializable {
     @FXML
     private TextField searchField;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        formValidator = new FormValidator();
+        studentManagement = new StudentIManagement();
+        fileIOManagement = new FileIOManagement();
+
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tableView.getItems().addAll(studentManagement.getAll());
+    }
+
     public void setApplication(Main application) {
         this.application = application;
     }
 
-    public void btnReset(ActionEvent actionEvent) {
-        clearField();
-    }
-
-    private void clearField() {
-        name.clear();
-        address.clear();
-        phone.clear();
-        email.clear();
-    }
-
-    public void btnAddStudent(ActionEvent actionEvent) {
-        if (!validator.name(name.getText())) {
+    public void btnSave(ActionEvent actionEvent) {
+        if (!formValidator.name(name.getText())) {
             application.showMsg("Tên phải có độ dài từ 2 - 50 ký tự.", Alert.AlertType.ERROR);
-        } else if (!validator.email(email.getText())) {
+        } else if (!formValidator.phone(phone.getText())) {
+            application.showMsg("Số điện thoại sai định dạng!", Alert.AlertType.ERROR);
+        } else if (!formValidator.email(email.getText())) {
             application.showMsg("Email sai định dạng!", Alert.AlertType.ERROR);
         } else {
             if (!isEdit) {
@@ -86,9 +91,8 @@ public class StudentController implements Initializable {
                 studentManagement.get(studentId).setAddress(address.getText());
                 studentManagement.get(studentId).setPhone(phone.getText());
                 studentManagement.get(studentId).setEmail(email.getText());
-//                studentManagement.update(studentId, student);
                 application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
-                loadAllStudent();
+                reloadTableView(studentManagement.getAll());
                 clearField();
                 isEdit = false;
                 studentId = -1;
@@ -102,10 +106,10 @@ public class StudentController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Bạn thực sự muốn xóa?");
             Optional<ButtonType> confirm = alert.showAndWait();
-            if (confirm.get() == ButtonType.OK){
+            if (confirm.get() == ButtonType.OK) {
                 studentManagement.delete(studentId);
                 application.showMsg("Xóa thành công!", Alert.AlertType.INFORMATION);
-                loadAllStudent();
+                reloadTableView(studentManagement.getAll());
                 clearField();
                 studentId = -1;
                 isEdit = false;
@@ -126,25 +130,22 @@ public class StudentController implements Initializable {
         }
     }
 
-    private void loadAllStudent() {
+    private void reloadTableView(List<Student> students) {
         tableView.getItems().clear();
-        for (Student student: studentManagement.getAll()) {
+        for (Student student : students) {
             tableView.getItems().add(student);
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        validator = new Validator();
-        studentManagement = new StudentIManagement();
-        fileIOManagement = new FileIOManagement();
-
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tableView.getItems().addAll(studentManagement.getAll());
+    public void btnSearch(ActionEvent actionEvent) {
+        String searchQuery = searchField.getText().toLowerCase().trim();
+        List<Student> students = studentManagement.searchByName(searchQuery);
+        if (students.size() > 0) {
+            application.showMsg("Tìm thấy " + students.size() + " kết quả cho \"" + searchField.getText() + "\"", Alert.AlertType.INFORMATION);
+            reloadTableView(students);
+        } else {
+            application.showMsg("Không tìm thấy kết quả nào!", Alert.AlertType.INFORMATION);
+        }
     }
 
     public void btnExport(ActionEvent actionEvent) {
@@ -160,29 +161,21 @@ public class StudentController implements Initializable {
         List<Student> list = fileIOManagement.readCSV();
         if (list != null) {
             studentManagement.setStudents(list);
-            loadAllStudent();
+            reloadTableView(studentManagement.getAll());
             application.showMsg("Nhập file CSV thành công!", Alert.AlertType.INFORMATION);
         } else {
             application.showMsg("Nhập file CSV thất bại!", Alert.AlertType.ERROR);
         }
     }
 
-    public void btnSearch(ActionEvent actionEvent) {
-        String q = searchField.getText().toLowerCase().trim();
-        List<Student> students = new ArrayList<>();
-        for (Student student: studentManagement.getAll()) {
-            if (student.getName().toLowerCase().trim().contains(q)) {
-                students.add(student);
-            }
-        }
-        if (students.size() > 0) {
-            application.showMsg("Tìm thấy " + students.size() + " kết quả cho " + searchField.getText(), Alert.AlertType.INFORMATION);
-            tableView.getItems().clear();
-            for (Student student: students) {
-                tableView.getItems().add(student);
-            }
-        } else {
-            application.showMsg("Không tìm thấy kết quả nào!", Alert.AlertType.INFORMATION);
-        }
+    public void btnReset(ActionEvent actionEvent) {
+        clearField();
+    }
+
+    private void clearField() {
+        name.clear();
+        address.clear();
+        phone.clear();
+        email.clear();
     }
 }
