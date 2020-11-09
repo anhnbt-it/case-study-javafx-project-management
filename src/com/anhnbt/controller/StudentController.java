@@ -149,7 +149,7 @@ public class StudentController implements Initializable {
 
     public void btnExport(ActionEvent actionEvent) {
         try {
-            fileIOManagement.writeCSV(studentManagement.getAll());
+            fileIOManagement.writeCSVFile(studentManagement.getAll());
             application.showMsg("Xuất file CSV thành công!", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
             e.printStackTrace();
