@@ -1,5 +1,6 @@
-package com.anhnbt;
+package com.anhnbt.controller;
 
+import com.anhnbt.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,10 +19,6 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField password;
 
-    public LoginController() {
-        System.out.println("Load Controller...");
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String javaVersion = System.getProperty("java.version");
@@ -29,21 +26,20 @@ public class LoginController implements Initializable {
         System.out.println("Hello, JavaFX " + javafxVersion + "\nRunning on Java " + javaVersion + ".");
     }
 
+    public void setApplication(Main application) {
+        this.application = application;
+    }
+
     @FXML
     private void btnLogin(ActionEvent actionEvent) throws IOException {
-        System.out.println("Login as " + application.getUser());
-        if (application == null) {
-            return;
+        if (username.getText().isEmpty()) {
+            application.showMsg("Tên tài khoản không được để trống!", Alert.AlertType.ERROR);
+        } else if (password.getText().isEmpty()) {
+            application.showMsg("Mật khẩu không được để trống!", Alert.AlertType.ERROR);
+        } else if (!application.userLogging(username.getText(), password.getText())) {
+            application.showMsg("Tài khoản hoặc mật khẩu không đúng!", Alert.AlertType.ERROR);
         } else {
-            if (username.getText().isEmpty()) {
-                application.showMsg("Tên tài khoản không được để trống!", Alert.AlertType.ERROR);
-            } else if (password.getText().isEmpty()) {
-                application.showMsg("Mật khẩu không được để trống!", Alert.AlertType.ERROR);
-            } else if (!application.userLogging(username.getText(), password.getText())) {
-                application.showMsg("Tài khoản hoặc mật khẩu không đúng!", Alert.AlertType.ERROR);
-            } else {
-                application.showMsg("Đăng nhập thành công!", Alert.AlertType.INFORMATION);
-            }
+            application.showMsg("Đăng nhập thành công!", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -57,7 +53,4 @@ public class LoginController implements Initializable {
         password.clear();
     }
 
-    public void setApplication(Main application) {
-        this.application = application;
-    }
 }

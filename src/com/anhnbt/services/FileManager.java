@@ -1,4 +1,6 @@
-package com.anhnbt;
+package com.anhnbt.services;
+
+import com.anhnbt.entities.Student;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class FileManager {
         file = new File(pathName);
     }
 
-    public List<Student> readFromFile() {
+    public ArrayList<Student> readFromFile() {
         try {
             if (!file.exists()) {
                 file.createNewFile();

@@ -1,4 +1,4 @@
-package com.anhnbt;
+package com.anhnbt.services;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +16,7 @@ public class Validator {
     }
 
     public boolean name(String regex) {
-        pattern = Pattern.compile(NAME_REGEX);
+        pattern = Pattern.compile(NAME_REGEX, Pattern.UNICODE_CHARACTER_CLASS);
         matcher = pattern.matcher(regex);
         return matcher.matches();
     }

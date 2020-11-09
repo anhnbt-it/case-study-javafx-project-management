@@ -1,4 +1,4 @@
-package com.anhnbt;
+package com.anhnbt.services;
 
 import javafx.collections.ObservableList;
 

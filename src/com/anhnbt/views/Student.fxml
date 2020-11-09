@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.anhnbt.StudentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.anhnbt.controller.StudentController">
    <children>
       <VBox prefHeight="480.0" prefWidth="960.0">
          <children>
@@ -61,6 +61,7 @@
                                 <buttons>
                                     <Button defaultButton="true" mnemonicParsing="false" onAction="#btnAddStudent" text="Lưu" />
                                   <Button mnemonicParsing="false" onAction="#btnReset" text="Nhập lại" />
+                                    <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" onAction="#btnDelete" text="Xóa" />
                                 </buttons>
                               </ButtonBar>
                            </children>
@@ -83,6 +84,8 @@
                                     </Text>
                                     <TextField promptText="Tìm học viên theo tên" />
                                   <Button mnemonicParsing="false" text="Tìm kiếm" />
+                                    <Button mnemonicParsing="false" onAction="#writeData" text="Ghi file" />
+                                    <Button mnemonicParsing="false" onAction="#readData" text="Đọc file" />
                                 </buttons>
                                  <VBox.margin>
                                     <Insets />

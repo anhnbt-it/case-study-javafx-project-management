@@ -19,7 +19,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import java.net.URL?>
 <AnchorPane
-        fx:controller="com.anhnbt.LoginController"
+        fx:controller="com.anhnbt.controller.LoginController"
           xmlns:fx="http://javafx.com/fxml"
             prefHeight="480.0" prefWidth="960.0">
     <children>

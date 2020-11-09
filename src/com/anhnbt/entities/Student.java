@@ -1,4 +1,4 @@
-package com.anhnbt;
+package com.anhnbt.entities;
 
 import java.io.Serializable;
 

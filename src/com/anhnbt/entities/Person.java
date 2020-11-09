@@ -1,6 +1,8 @@
-package com.anhnbt;
+package com.anhnbt.entities;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private String name;
     private String address;
     private String phone;

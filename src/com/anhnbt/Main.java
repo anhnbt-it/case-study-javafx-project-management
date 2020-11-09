@@ -1,5 +1,9 @@
 package com.anhnbt;
 
+import com.anhnbt.controller.StudentController;
+import com.anhnbt.entities.User;
+import com.anhnbt.services.Authenticator;
+import com.anhnbt.controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +37,7 @@ public class Main extends Application {
     }
 
     private void gotoLogin() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/Login.fxml"));
 
         root = fxmlLoader.load();
         LoginController loginController = (LoginController) fxmlLoader.getController();
@@ -42,7 +46,7 @@ public class Main extends Application {
     }
 
     private void gotoStudent() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Student.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/Student.fxml"));
 
         root = fxmlLoader.load();
         StudentController studentController = (StudentController) fxmlLoader.getController();
