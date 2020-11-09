@@ -54,7 +54,7 @@ public class FileIOManagement {
                 String line = scanner.nextLine();
                 if (line.contains(",")) {
                     String[] data = line.split(",");
-                    students.add(new Student(data[0], data[1], data[2], data[3]));
+                    students.add(new Student(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4]));
                 }
             }
         } catch (IOException e) {

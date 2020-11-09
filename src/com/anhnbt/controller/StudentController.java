@@ -27,6 +27,8 @@ public class StudentController implements Initializable {
     private int studentId = -1;
 
     @FXML
+    private TableColumn<Student, Integer> idCol;
+    @FXML
     private TableColumn<Student, String> nameCol;
     @FXML
     private TableColumn<Student, String> addressCol;
@@ -70,7 +72,7 @@ public class StudentController implements Initializable {
         } else if (!validator.email(email.getText())) {
             application.showMsg("Email sai định dạng!", Alert.AlertType.ERROR);
         } else {
-            Student student = new Student(name.getText(), address.getText(), phone.getText(), email.getText());
+            Student student = new Student(Student.nextId, name.getText(), address.getText(), phone.getText(), email.getText());
             if (!isEdit) {
                 if (studentManagement.save(student)) {
                     application.showMsg("Thêm học viên thành công!", Alert.AlertType.INFORMATION);
@@ -132,6 +134,7 @@ public class StudentController implements Initializable {
         studentManagement = new StudentIManagement();
         fileIOManagement = new FileIOManagement();
 
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));

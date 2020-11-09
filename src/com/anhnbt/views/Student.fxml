@@ -90,9 +90,10 @@
                               </ButtonBar>
                               <TableView fx:id="tableView" editable="true" onMouseClicked="#onMouseClick">
                                 <columns>
+                                    <TableColumn fx:id="idCol" prefWidth="76.0" text="ID" />
                                     <TableColumn fx:id="nameCol" prefWidth="150.0" text="Họ tên" />
-                                  <TableColumn fx:id="addressCol" prefWidth="140.0" text="Địa chỉ" />
-                                    <TableColumn fx:id="phoneCol" prefWidth="140.0" text="SĐT" />
+                                  <TableColumn fx:id="addressCol" prefWidth="150.0" text="Địa chỉ" />
+                                    <TableColumn fx:id="phoneCol" prefWidth="130.0" text="SĐT" />
                                     <TableColumn fx:id="emailCol" prefWidth="140.0" text="Email" />
                                 </columns>
                               </TableView>
