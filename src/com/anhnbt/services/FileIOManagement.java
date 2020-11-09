@@ -17,7 +17,7 @@ public class FileIOManagement {
             if (!file.exists()) file.createNewFile();
             Writer writer = new BufferedWriter(new FileWriter(file));
             for (Student student : students) {
-                String text = student.getId() + "," + student.getName() + "," + student.getAddress() + "," + student.getPhone() + "," + student.getEmail() + "\n";
+                String text = student.getId() + "," + student.getName() + "," + student.getAddress() + "," + student.getPhone() + "," + student.getEmail() + "," + student.getGender() + "\n";
                 try {
                     writer.write(text);
                 } catch (IOException e) {

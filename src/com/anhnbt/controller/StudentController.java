@@ -13,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -164,8 +163,12 @@ public class StudentController implements Initializable {
 
     public void btnExport(ActionEvent actionEvent) {
         try {
-            fileIOManagement.writeCSVFile(studentManagement.getAll());
-            application.showMsg("Xuất file CSV thành công!", Alert.AlertType.INFORMATION);
+            if (fileIOManagement.writeCSVFile(studentManagement.getAll())) {
+                application.showMsg("Xuất file CSV thành công!", Alert.AlertType.INFORMATION);
+            } else {
+                application.showMsg("Xuất file CSV thất bại!", Alert.AlertType.INFORMATION);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
