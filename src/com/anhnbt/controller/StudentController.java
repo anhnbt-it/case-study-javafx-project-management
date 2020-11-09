@@ -72,8 +72,8 @@ public class StudentController implements Initializable {
         } else if (!validator.email(email.getText())) {
             application.showMsg("Email sai định dạng!", Alert.AlertType.ERROR);
         } else {
-            Student student = new Student(Student.nextId, name.getText(), address.getText(), phone.getText(), email.getText());
             if (!isEdit) {
+                Student student = new Student(Student.nextId, name.getText(), address.getText(), phone.getText(), email.getText());
                 if (studentManagement.save(student)) {
                     application.showMsg("Thêm học viên thành công!", Alert.AlertType.INFORMATION);
                     tableView.getItems().add(student);
@@ -82,12 +82,17 @@ public class StudentController implements Initializable {
                     application.showMsg("Đã xảy ra lỗi. Vui lòng thử lại!", Alert.AlertType.ERROR);
                 }
             } else {
-                studentManagement.update(studentId, student);
+                studentManagement.get(studentId).setName(name.getText());
+                studentManagement.get(studentId).setAddress(address.getText());
+                studentManagement.get(studentId).setPhone(phone.getText());
+                studentManagement.get(studentId).setEmail(email.getText());
+//                studentManagement.update(studentId, student);
                 application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
                 loadAllStudent();
                 clearField();
                 isEdit = false;
                 studentId = -1;
+                btnDelete.setDisable(true);
             }
         }
     }

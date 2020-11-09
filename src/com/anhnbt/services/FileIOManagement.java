@@ -34,7 +34,7 @@ public class FileIOManagement {
         try {
             writer = new BufferedWriter(new FileWriter(file));
             for (Student student : students) {
-                String text = student.getName() + "," + student.getAddress() + "," + student.getPhone() + "," + student.getEmail() + "\n";
+                String text = student.getId() + "," + student.getName() + "," + student.getAddress() + "," + student.getPhone() + "," + student.getEmail() + "\n";
                 writer.write(text);
             }
         } catch (Exception ex) {
