@@ -139,12 +139,16 @@ public class StudentController implements Initializable {
         tableView.getItems().addAll(studentDAO.getAll());
     }
 
-    public void writeData(ActionEvent actionEvent) {
-        fileManager.writeToFile(studentDAO.getAll());
-        application.showMsg("Ghi file thành công!", Alert.AlertType.INFORMATION);
+    public void btnExport(ActionEvent actionEvent) {
+        try {
+            fileManager.writeExcel(studentDAO.getAll());
+            application.showMsg("Ghi file thành công!", Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void readData(ActionEvent actionEvent) {
+    public void btnImport(ActionEvent actionEvent) {
         List<Student> list = fileManager.readFromFile();
         if (list != null) {
             studentDAO.setStudents(list);

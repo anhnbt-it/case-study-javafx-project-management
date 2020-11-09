@@ -55,4 +55,25 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+
+    public void writeExcel(List<Student> students) throws Exception {
+        Writer writer = null;
+        try {
+            File file = new File("Data.csv.");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            writer = new BufferedWriter(new FileWriter(file));
+            for (Student student: students) {
+                String text = student.getName() + "," + student.getAddress() + "," + student.getPhone() + "," + student.getEmail() + "\n";
+                writer.write(text);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            writer.flush();
+            writer.close();
+        }
+    }
 }
