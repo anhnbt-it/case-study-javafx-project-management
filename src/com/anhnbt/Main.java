@@ -67,7 +67,6 @@ public class Main extends Application {
     public boolean userLogging(String username, String password) throws IOException {
         if (Authenticator.validate(username, password)) {
             user = User.getInstance(username);
-            System.out.println("User: " + username);
             gotoStudent();
             return true;
         }

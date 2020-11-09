@@ -82,8 +82,8 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Text>
-                                    <TextField promptText="Tìm học viên theo tên" />
-                                  <Button mnemonicParsing="false" text="Tìm kiếm" />
+                                    <TextField fx:id="query" promptText="Tìm học viên theo tên" />
+                                  <Button mnemonicParsing="false" onAction="#btnSearch" text="Tìm kiếm" />
                                     <Button mnemonicParsing="false" onAction="#writeData" text="Ghi file" />
                                     <Button mnemonicParsing="false" onAction="#readData" text="Đọc file" />
                                 </buttons>

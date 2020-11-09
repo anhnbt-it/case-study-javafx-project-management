@@ -14,16 +14,16 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class StudentController implements Initializable {
-    public Button btnDelete;
     private FileManager fileManager;
     private Main application;
     private StudentDao studentDAO;
     private Validator validator;
     private boolean isEdit = false;
-    private int selectedItem = -1;
+    private int studentId = -1;
 
     @FXML
     private TableColumn<Student, String> nameCol;
@@ -43,6 +43,10 @@ public class StudentController implements Initializable {
     private TextField phone;
     @FXML
     private TextField email;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private TextField query;
 
     public void setApplication(Main application) {
         this.application = application;
@@ -78,36 +82,49 @@ public class StudentController implements Initializable {
                         application.showMsg("Đã xảy ra lỗi. Vui lòng thử lại!", Alert.AlertType.ERROR);
                     }
                 } else {
-                    isEdit = false;
-                    studentDAO.update(selectedItem, student);
+
+                    studentDAO.update(studentId, student);
                     application.showMsg("Sửa học viên thành công!", Alert.AlertType.INFORMATION);
                     loadAllStudent();
                     clearField();
+                    isEdit = false;
+                    studentId = -1;
                 }
             }
         }
     }
 
     public void btnDelete(ActionEvent actionEvent) {
-        if (isEdit) {
-
+        if (isEdit && studentId != -1) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Bạn thực sự muốn xóa?");
+            Optional<ButtonType> confirm = alert.showAndWait();
+            if (confirm.get() == ButtonType.OK){
+                studentDAO.delete(studentId);
+                application.showMsg("Xóa thành công!", Alert.AlertType.INFORMATION);
+                loadAllStudent();
+                clearField();
+                studentId = -1;
+                isEdit = false;
+                btnDelete.setDisable(true);
+            }
         }
     }
 
     public void onMouseClick(MouseEvent mouseEvent) {
-        selectedItem = tableView.getSelectionModel().getSelectedIndex();
-        if (selectedItem != -1) {
-            name.setText(studentDAO.get(selectedItem).getName());
-            address.setText(studentDAO.get(selectedItem).getAddress());
-            phone.setText(studentDAO.get(selectedItem).getPhone());
-            email.setText(studentDAO.get(selectedItem).getEmail());
+        studentId = tableView.getSelectionModel().getSelectedIndex();
+        if (studentId != -1) {
+            name.setText(studentDAO.get(studentId).getName());
+            address.setText(studentDAO.get(studentId).getAddress());
+            phone.setText(studentDAO.get(studentId).getPhone());
+            email.setText(studentDAO.get(studentId).getEmail());
             isEdit = true;
             btnDelete.setDisable(false);
         }
     }
 
     private void loadAllStudent() {
-//        tableView.getItems().clear();
+        tableView.getItems().clear();
         for (Student student: studentDAO.getAll()) {
             tableView.getItems().add(student);
         }
@@ -140,5 +157,10 @@ public class StudentController implements Initializable {
         } else {
             application.showMsg("Đọc file thất bại!", Alert.AlertType.ERROR);
         }
+    }
+
+    public void btnSearch(ActionEvent actionEvent) {
+        System.out.println(query.getText());
+
     }
 }

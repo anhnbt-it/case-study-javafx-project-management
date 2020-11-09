@@ -39,7 +39,7 @@ public class LoginController implements Initializable {
         } else if (!application.userLogging(username.getText(), password.getText())) {
             application.showMsg("Tài khoản hoặc mật khẩu không đúng!", Alert.AlertType.ERROR);
         } else {
-            application.showMsg("Đăng nhập thành công!", Alert.AlertType.INFORMATION);
+            application.showMsg("Welcome, !" + application.getUser(), Alert.AlertType.INFORMATION);
         }
     }
 
